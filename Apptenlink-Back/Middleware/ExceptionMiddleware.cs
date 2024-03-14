@@ -1,15 +1,15 @@
-﻿using Apptenlink_Back.Middleware.Exceptions.BadRequest;
-using Apptenlink_Back.Middleware.Exceptions.Forbidden;
-using Apptenlink_Back.Middleware.Exceptions.NotFound;
-using Apptenlink_Back.Middleware.Exceptions.Unauthorized;
-using Apptenlink_Back.Middleware.Models;
+﻿using Apptelink_Back.Middleware.Exceptions.BadRequest;
+using Apptelink_Back.Middleware.Exceptions.Forbidden;
+using Apptelink_Back.Middleware.Exceptions.NotFound;
+using Apptelink_Back.Middleware.Exceptions.Unauthorized;
+using Apptelink_Back.Middleware.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Net;
 using System.Text.Json;
-using NotImplementedException = Apptenlink_Back.Middleware.Exceptions.NotImplemented.NotImplementedException;
+using NotImplementedException = Apptelink_Back.Middleware.Exceptions.NotImplemented.NotImplementedException;
 
-namespace Apptenlink_Back.Middleware
+namespace Apptelink_Back.Middleware
 {
     public class ExceptionMiddleware
     {

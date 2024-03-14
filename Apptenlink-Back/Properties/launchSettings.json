@@ -6,7 +6,10 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DATABASE": "Server=localhost;Database=apptelink;Integrated Security=true;"
+        "DATABASE": "Server=localhost;Database=apptelink;Integrated Security=true;",
+        "JWTKey": "JsonWebApiTokenWithSwaggerAuthorizationAuthenticationAspNetCore",
+        "JWTIssuer": "baseWebApiIssuer",
+        "JWTAudience": "baseWebApiAudience"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7008;http://localhost:5175"
@@ -17,7 +20,10 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DATABASE": "Server=localhost;Database=apptelink;Integrated Security=true;"
+        "DATABASE": "Server=localhost;Database=apptelink;Integrated Security=true;",
+        "JWTKey": "JsonWebApiTokenWithSwaggerAuthorizationAuthenticationAspNetCore",
+        "JWTIssuer": "baseWebApiIssuer",
+        "JWTAudience": "baseWebApiAudience"
       }
     },
     "Container (Dockerfile)": {

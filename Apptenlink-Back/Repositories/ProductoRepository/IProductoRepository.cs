@@ -1,8 +1,8 @@
-﻿using Apptenlink_Back.Entities;
+﻿using Apptelink_Back.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Apptenlink_Back.Repositories.ProductoRepository
+namespace Apptelink_Back.Repositories.ProductoRepository
 {
     public interface IProductoRepository
     {

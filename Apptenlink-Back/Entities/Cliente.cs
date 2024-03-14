@@ -1,9 +1,9 @@
-﻿using Apptenlink_Back.Utils;
+﻿using Apptelink_Back.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Apptenlink_Back.Entities
+namespace Apptelink_Back.Entities
 {
     public partial class Cliente
     {

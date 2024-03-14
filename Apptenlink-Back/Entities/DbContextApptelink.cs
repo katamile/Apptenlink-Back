@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Apptenlink_Back.Entities
+namespace Apptelink_Back.Entities
 {
     public partial class DbContextApptelink : DbContext
     {
@@ -37,9 +37,9 @@ namespace Apptenlink_Back.Entities
             modelBuilder.Entity<Cliente>(entity =>
             {
                 entity.HasKey(e => e.IdCliente)
-                    .HasName("PK__Clientes__D59466423CE367AB");
+                    .HasName("PK__Clientes__D5946642FFB927F8");
 
-                entity.HasIndex(e => e.Identificacion, "UQ__Clientes__D6F931E53D555598")
+                entity.HasIndex(e => e.Identificacion, "UQ__Clientes__D6F931E5F3F3FB5A")
                     .IsUnique();
 
                 entity.Property(e => e.Apellido)
@@ -75,7 +75,7 @@ namespace Apptenlink_Back.Entities
             modelBuilder.Entity<DetalleFactura>(entity =>
             {
                 entity.HasKey(e => e.IdItem)
-                    .HasName("PK__DetalleF__51E8426210BFB9B5");
+                    .HasName("PK__DetalleF__51E84262639B5749");
 
                 entity.Property(e => e.Cantidad).HasDefaultValueSql("((1))");
 
@@ -83,6 +83,10 @@ namespace Apptenlink_Back.Entities
                     .HasMaxLength(1)
                     .IsUnicode(false)
                     .HasDefaultValueSql("('A')");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Precio).HasColumnType("decimal(18, 2)");
 
@@ -104,15 +108,19 @@ namespace Apptenlink_Back.Entities
             modelBuilder.Entity<Factura>(entity =>
             {
                 entity.HasKey(e => e.IdFactura)
-                    .HasName("PK__Facturas__50E7BAF1E6E7FB69");
+                    .HasName("PK__Facturas__50E7BAF16498BD44");
 
-                entity.HasIndex(e => e.NumeroFactura, "UQ__Facturas__CF12F9A64EECFC89")
+                entity.HasIndex(e => e.NumeroFactura, "UQ__Facturas__CF12F9A6965DBF22")
                     .IsUnique();
 
                 entity.Property(e => e.Estado)
                     .HasMaxLength(1)
                     .IsUnicode(false)
                     .HasDefaultValueSql("('A')");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Igv)
                     .HasColumnType("decimal(18, 2)")
@@ -140,7 +148,7 @@ namespace Apptenlink_Back.Entities
             modelBuilder.Entity<Parametro>(entity =>
             {
                 entity.HasKey(e => e.IdParam)
-                    .HasName("PK__Parametr__19B5C27375810DDF");
+                    .HasName("PK__Parametr__19B5C27312FB3012");
 
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(50)
@@ -154,9 +162,9 @@ namespace Apptenlink_Back.Entities
             modelBuilder.Entity<Producto>(entity =>
             {
                 entity.HasKey(e => e.IdProducto)
-                    .HasName("PK__Producto__0988921074230279");
+                    .HasName("PK__Producto__098892104ED184FF");
 
-                entity.HasIndex(e => e.Codigo, "UQ__Producto__06370DAC31DEE4C1")
+                entity.HasIndex(e => e.Codigo, "UQ__Producto__06370DACAAA50217")
                     .IsUnique();
 
                 entity.Property(e => e.Codigo)
@@ -182,7 +190,7 @@ namespace Apptenlink_Back.Entities
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.IdUsuario)
-                    .HasName("PK__Usuarios__5B65BF97A0117AA5");
+                    .HasName("PK__Usuarios__5B65BF97ABA39820");
 
                 entity.Property(e => e.Contraseña)
                     .HasMaxLength(200)
@@ -192,6 +200,10 @@ namespace Apptenlink_Back.Entities
                     .HasMaxLength(1)
                     .IsUnicode(false)
                     .HasDefaultValueSql("('A')");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.IntentosFallidos).HasDefaultValueSql("((0))");
 

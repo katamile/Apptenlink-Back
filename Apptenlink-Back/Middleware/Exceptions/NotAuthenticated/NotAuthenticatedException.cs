@@ -1,4 +1,4 @@
-﻿namespace Apptenlink_Back.Middleware.Exceptions.Unauthorized
+﻿namespace Apptelink_Back.Middleware.Exceptions.Unauthorized
 {
     public class NotAuthenticatedException : Exception
     {

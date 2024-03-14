@@ -1,11 +1,13 @@
-﻿using Apptenlink_Back.Entities;
-using Apptenlink_Back.Repositories.GenericRepository;
+﻿using Apptelink_Back.Entities;
 
-namespace Apptenlink_Back.Repositories.VentaRepository
+namespace Apptelink_Back.Repositories.FacturaRepository
 {
-    public interface IFacturaRepository : IGenericRepository<Factura>
+    public interface IFacturaRepository
     {
-        Task<Factura> Registrar(Factura entidad);
-        Task<List<Factura>> Listar();
+        Task<IEnumerable<Factura>> ListarTodosAsync();
+        Task<Factura> ObtenerPorIdAsync(int idFactura);
+        Task<Factura> ObtenerPorNumeroAsync(string numeroFactura);
+        Task<bool> CrearAsync(Factura factura);
+        Task<bool> EliminarAsync(int idFactura);
     }
 }

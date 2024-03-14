@@ -1,148 +1,108 @@
-﻿using Apptenlink_Back.Entities;
-using Apptenlink_Back.Repositories.GenericRepository;
-using Apptenlink_Back.Repositories.VentaRepository;
-using Apptenlink_Back.Utils;
+﻿using Apptelink_Back.Entities;
+using Apptelink_Back.Utils;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Apptenlink_Back.Repositories.FacturaRepository
+namespace Apptelink_Back.Repositories.FacturaRepository
 {
-    public class FacturaRepository : GenericRepository<Factura>, IFacturaRepository
+    public class FacturaRepository : IFacturaRepository
     {
-        private readonly DbContextApptelink _dbContext;
+        private readonly DbContextApptelink _contexto;
 
-        public FacturaRepository(DbContextApptelink dbContex) : base(dbContex)
+        public FacturaRepository(DbContextApptelink contexto)
         {
-            _dbContext = dbContex;
+            _contexto = contexto;
         }
 
-        public async Task<Factura> Registrar(Factura entidad)
+        public async Task<IEnumerable<Factura>> ListarTodosAsync()
         {
-            Factura facturaGenerada = new Factura();
+            return await _contexto.Facturas.Include(f => f.DetalleFacturas).Where(f => f.Estado == Globales.ESTADO_ACTIVO).ToListAsync();
+        }
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
+        public async Task<Factura> ObtenerPorIdAsync(int idFactura)
+        {
+            return await _contexto.Facturas.Include(f => f.DetalleFacturas).FirstOrDefaultAsync(f => f.IdFactura == idFactura && f.Estado == Globales.ESTADO_ACTIVO);
+        }
+
+        public async Task<Factura> ObtenerPorNumeroAsync(string numeroFactura)
+        {
+            return await _contexto.Facturas.Include(f => f.DetalleFacturas).FirstOrDefaultAsync(
+                                                    f => EF.Functions.Like(f.NumeroFactura, $"%{numeroFactura}%")
+                                                    && f.Estado == Globales.ESTADO_ACTIVO);
+        }
+
+
+        public async Task<bool> CrearAsync(Factura factura)
+        {
+            factura.NumeroFactura = GenerarNumeroFactura();
+            factura.Subtotal = CalcularSubtotal(factura);
+            factura.PorcentajeIgv = ObtenerPorcentajeIGV(); // Debes definir cómo obtener este valor
+            factura.Igv = factura.Subtotal * factura.PorcentajeIgv;
+            factura.Total = factura.Subtotal + factura.Igv;
+
+            factura.Estado = Globales.ESTADO_ACTIVO;
+            factura.FechaCreacion = DateTime.Now;
+
+            _contexto.Facturas.Add(factura);
+
+            foreach (var detalle in factura.DetalleFacturas)
             {
-                try
-                {
+                detalle.Subtotal = detalle.Precio * detalle.Cantidad;
+                _contexto.Entry(detalle).State = EntityState.Added;
 
-                    // Validar que haya al menos un detalle en la factura
-                    if (entidad.DetalleFacturas == null || !entidad.DetalleFacturas.Any())
-                    {
-                        throw new Exception("La factura debe tener al menos un detalle de ítem.");
-                    }
-
-                    // Calcular el subtotal sumando los subtotales de todos los detalles de la factura
-                    decimal subtotal = entidad.DetalleFacturas.Sum(d => d.Subtotal ?? 0);
-
-                    // Obtener el porcentaje de IGV (Impuesto General a las Ventas)
-                    decimal porcentajeIGV = 0.13m;
-
-                    // Calcular el IGV multiplicando el subtotal por el porcentaje de IGV
-                    decimal igv = subtotal * porcentajeIGV;
-
-                    // Calcular el total sumando el subtotal y el IGV
-                    decimal total = subtotal + igv;
-
-                    // Asignar los valores calculados a la entidad de factura
-                    entidad.Subtotal = subtotal;
-                    entidad.PorcentajeIgv = porcentajeIGV;
-                    entidad.Igv = igv;
-                    entidad.Total = total;
-
-                    // Generar el número de factura utilizando la fecha y un valor autoincrementable
-                    string fechaFactura = DateTime.Now.ToString("yyyyMMdd"); // Formato: AñoMesDía
-                    int ultimoNumero = await ObtenerUltimoNumeroFactura(fechaFactura);
-                    string numeroFactura = $"{fechaFactura}-{ultimoNumero + 1}";
-
-                    // Verificar si el cliente existe en la base de datos
-                    var cliente = await _dbContext.Clientes.FindAsync(entidad.IdCliente);
-                    if (cliente == null)
-                    {
-                        throw new Exception("El cliente seleccionado no existe en la base de datos.");
-                    }
-
-                    // Guardar la factura en la base de datos
-                    await _dbContext.Facturas.AddAsync(entidad);
-                    await _dbContext.SaveChangesAsync();
-
-                    // Actualizar el stock de los productos en el detalle de la factura
-                    foreach (var detalle in entidad.DetalleFacturas)
-                    {
-                        var producto = await _dbContext.Productos.FindAsync(detalle.IdProducto);
-                        if (producto == null)
-                        {
-                            throw new Exception($"El producto con ID {detalle.IdProducto} no existe en la base de datos.");
-                        }
-
-                        // Validar que haya suficiente stock disponible
-                        if (producto.Stock < detalle.Cantidad)
-                        {
-                            throw new Exception($"No hay suficiente stock disponible para el producto con ID {detalle.IdProducto}.");
-                        }
-
-                        // Actualizar el stock del producto
-                        if (producto.Stock >= detalle.Cantidad)
-                        {
-                            producto.Stock -= detalle.Cantidad;
-                        }
-                        else
-                        {
-                            throw new Exception($"No hay suficiente stock disponible para el producto con ID {detalle.IdProducto}.");
-                        }
-                        _dbContext.Productos.Update(producto);
-
-                    }
-
-                    // Guardar los cambios en el stock de productos
-                    await _dbContext.SaveChangesAsync();
-
-                    // Confirmar la transacción
-                    transaction.Commit();
-
-                    facturaGenerada = entidad;
-                }
-                catch (Exception ex)
-                {
-                    // Si ocurre algún error, realizar rollback de la transacción
-                    transaction.Rollback();
-                    throw ex;
-                }
+                // Disminuir la cantidad del stock del producto
+                var producto = await _contexto.Productos.FindAsync(detalle.IdProducto);
+                producto.Stock -= detalle.Cantidad;
+                _contexto.Entry(producto).State = EntityState.Modified;
             }
 
-            return facturaGenerada;
+            await _contexto.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<List<Factura>> Listar()
+        public async Task<bool> EliminarAsync(int idFactura)
         {
-            // Obtener la lista de facturas incluyendo los detalles de ítems y la información del cliente
-            var facturas = await _dbContext.Facturas
-                .Include(f => f.DetalleFacturas)
-                .Include(f => f.IdClienteNavigation)
-                .ToListAsync();
-
-            return facturas;
-        }
-
-        private async Task<int> ObtenerUltimoNumeroFactura(string fechaFactura)
-        {
-            var ultimaFactura = await _dbContext.Facturas
-                .Where(f => f.NumeroFactura.StartsWith(fechaFactura))
-                .OrderByDescending(f => f.IdFactura)
-                .FirstOrDefaultAsync();
-
-            if (ultimaFactura != null)
+            var factura = await _contexto.Facturas.FindAsync(idFactura);
+            if (factura != null)
             {
-                string[] partes = ultimaFactura.NumeroFactura.Split('-');
-                if (partes.Length == 2 && int.TryParse(partes[1], out int ultimoNumero))
-                {
-                    return ultimoNumero;
-                }
+                factura.Estado = Globales.ESTADO_INACTIVO;
+                await _contexto.SaveChangesAsync();
+                return true;
             }
+            return false;
+        }
 
-            return 0; // Si no se encuentra ninguna factura para esa fecha, el último número es 0
+        private string GenerarNumeroFactura()
+        {
+            // Obtener la fecha actual
+            DateTime fechaActual = DateTime.Today;
+
+            // Obtener el número de facturas emitidas hoy
+            int numeroFacturasHoy = _contexto.Facturas
+                                               .Count(f => f.FechaCreacion.Date == fechaActual);
+
+            // Incrementar en 1 para obtener el siguiente número de factura
+            numeroFacturasHoy++;
+
+            // Formatear el número de factura con el formato deseado (por ejemplo, FACT-YYYYMMDD-0001)
+            string numeroFactura = $"FACT-{fechaActual:yyyyMMdd}-{numeroFacturasHoy:D4}";
+
+            return numeroFactura;
+        }
+
+
+        private decimal CalcularSubtotal(Factura factura)
+        {
+            decimal subtotal = 0;
+            foreach (var detalle in factura.DetalleFacturas)
+            {
+                subtotal += detalle.Precio * detalle.Cantidad;
+            }
+            return subtotal;
+        }
+
+        private decimal ObtenerPorcentajeIGV()
+        {
+            return 0.12m;
         }
     }
 }

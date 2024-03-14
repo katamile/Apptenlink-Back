@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Apptenlink_Back.Entities
+namespace Apptelink_Back.Entities
 {
     public partial class Parametro
     {

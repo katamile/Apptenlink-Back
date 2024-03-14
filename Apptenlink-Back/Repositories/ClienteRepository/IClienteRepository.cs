@@ -1,6 +1,6 @@
-﻿using Apptenlink_Back.Entities;
+﻿using Apptelink_Back.Entities;
 
-namespace Apptenlink_Back.Repositories.ClienteRepository
+namespace Apptelink_Back.Repositories.ClienteRepository
 {
     public interface IClienteRepository
     {

@@ -1,4 +1,4 @@
-﻿namespace Apptenlink_Back.Middleware.Exceptions.Forbidden
+﻿namespace Apptelink_Back.Middleware.Exceptions.Forbidden
 {
     public class AccessRestrictedException : ForbiddenException
     {

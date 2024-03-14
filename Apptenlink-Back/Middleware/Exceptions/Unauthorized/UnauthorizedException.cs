@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using System.Net;
 
-namespace Apptenlink_Back.Middleware.Exceptions.Unauthorized
+namespace Apptelink_Back.Middleware.Exceptions.Unauthorized
 {
     public class UnauthorizedException : UnauthorizedAccessException
     {

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Apptenlink_Back.Middleware.Exceptions.BadRequest
+namespace Apptelink_Back.Middleware.Exceptions.BadRequest
 {
     public class BadRequestException : Exception
     {

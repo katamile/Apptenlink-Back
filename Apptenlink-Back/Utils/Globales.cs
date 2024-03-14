@@ -1,4 +1,4 @@
-﻿namespace Apptenlink_Back.Utils
+﻿namespace Apptelink_Back.Utils
 {
     public class Globales
     {

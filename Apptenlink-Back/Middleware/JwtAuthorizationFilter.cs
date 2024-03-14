@@ -1,6 +1,6 @@
-﻿using Apptenlink_Back.Middleware.Exceptions.Unauthorized;
-using Apptenlink_Back.Middleware.Models;
-using Apptenlink_Back.Utils;
+﻿using Apptelink_Back.Middleware.Exceptions.Unauthorized;
+using Apptelink_Back.Middleware.Models;
+using Apptelink_Back.Utils;
 using System.Text;
 using System.Text.Json;
 

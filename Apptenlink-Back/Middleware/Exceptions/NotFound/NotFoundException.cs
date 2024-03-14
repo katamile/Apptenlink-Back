@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Apptenlink_Back.Middleware.Exceptions.NotFound
+namespace Apptelink_Back.Middleware.Exceptions.NotFound
 {
     public class NotFoundException : Exception
     {

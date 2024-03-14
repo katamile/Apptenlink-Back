@@ -1,11 +1,11 @@
-﻿using Apptenlink_Back.Entities;
-using Apptenlink_Back.Services;
+﻿using Apptelink_Back.Entities;
+using Apptelink_Back.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Apptenlink_Back.Controllers
+namespace Apptelink_Back.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

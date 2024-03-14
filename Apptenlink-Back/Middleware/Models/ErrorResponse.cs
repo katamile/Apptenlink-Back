@@ -1,7 +1,7 @@
 ﻿
  using System.Net;
 
-namespace Apptenlink_Back.Middleware.Models
+namespace Apptelink_Back.Middleware.Models
 {
     internal class ErrorResponse
     {

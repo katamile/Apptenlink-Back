@@ -1,10 +1,10 @@
-﻿using Apptenlink_Back.Entities;
-using Apptenlink_Back.Repositories.VentaRepository;
+﻿using Apptelink_Back.Entities;
+using Apptelink_Back.Repositories.FacturaRepository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Apptenlink_Back.Services.FacturaService
+namespace Apptelink_Back.Services.FacturaService
 {
     public class FacturaService : IFacturaService
     {
@@ -15,46 +15,45 @@ namespace Apptenlink_Back.Services.FacturaService
             _facturaRepository = facturaRepository;
         }
 
-        public async Task<Factura> RegistrarFactura(Factura factura)
+        public async Task<IEnumerable<Factura>> ListarTodasFacturas()
         {
-            if (factura == null)
-            {
-                throw new ArgumentNullException(nameof(factura), "La factura no puede ser nula.");
-            }
-
-            if (string.IsNullOrEmpty(factura.NumeroFactura))
-            {
-                throw new ArgumentException("El número de factura no puede estar vacío.", nameof(factura.NumeroFactura));
-            }
-
-            // Puedes agregar más validaciones según tus necesidades
-
-            try
-            {
-                // Registrar la factura
-                return await _facturaRepository.Registrar(factura);
-            }
-            catch (Exception ex)
-            {
-                // Manejar cualquier error y relanzar la excepción
-                throw new Exception("Error al intentar registrar la factura.", ex);
-            }
+            return await _facturaRepository.ListarTodosAsync();
         }
 
+        public async Task<Factura> ObtenerFacturaPorId(int idFactura)
+        {
+            return await _facturaRepository.ObtenerPorIdAsync(idFactura);
+        }
 
-        public async Task<List<Factura>> ListarFacturas()
+        public async Task<Factura> ObtenerFacturaPorNumero(string numeroFactura)
+        {
+            return await _facturaRepository.ObtenerPorNumeroAsync(numeroFactura);
+        }
+
+        public async Task<bool> CrearFactura(Factura factura)
         {
             try
             {
-                // Obtener la lista de facturas
-                return await _facturaRepository.Listar();
+                return await _facturaRepository.CrearAsync(factura);
             }
             catch (Exception ex)
             {
-                // Manejar cualquier error y relanzar la excepción
-                throw new Exception("Error al intentar listar las facturas.", ex);
+                // Manejar el error aquí o lanzar una excepción para ser manejada en un nivel superior
+                throw new Exception("Error al crear factura", ex);
             }
         }
 
+        public async Task<bool> EliminarFactura(int idFactura)
+        {
+            try
+            {
+                return await _facturaRepository.EliminarAsync(idFactura);
+            }
+            catch (Exception ex)
+            {
+                // Manejar el error aquí o lanzar una excepción para ser manejada en un nivel superior
+                throw new Exception("Error al eliminar factura", ex);
+            }
+        }
     }
 }

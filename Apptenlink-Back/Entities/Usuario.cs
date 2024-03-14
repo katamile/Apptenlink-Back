@@ -1,9 +1,9 @@
-﻿using Apptenlink_Back.Utils;
+﻿using Apptelink_Back.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Apptenlink_Back.Entities
+namespace Apptelink_Back.Entities
 {
     public partial class Usuario
     {
@@ -25,5 +25,8 @@ namespace Apptenlink_Back.Entities
         [Required(ErrorMessage = "El estado no puede ser nulo.")]
         [RegularExpression("^[AI]$", ErrorMessage = $"El campo estado debe ser {Globales.ESTADO_ACTIVO} o {Globales.ESTADO_INACTIVO}.")]
         public string? Estado { get; set; }
+
+        [Required(ErrorMessage = "La fecha de estado no puede ser nula.")]
+        public DateTime? FechaCreacion { get; set; }
     }
 }

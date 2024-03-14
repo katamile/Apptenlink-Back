@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using System.Net;
 
-namespace Apptenlink_Back.Middleware.Exceptions.Forbidden
+namespace Apptelink_Back.Middleware.Exceptions.Forbidden
 {
     public class ForbiddenException : Exception
     {

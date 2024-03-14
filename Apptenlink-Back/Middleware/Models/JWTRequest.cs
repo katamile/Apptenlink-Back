@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Apptenlink_Back.Middleware.Models
+namespace Apptelink_Back.Middleware.Models
 {
     public class JWTRequest
     {

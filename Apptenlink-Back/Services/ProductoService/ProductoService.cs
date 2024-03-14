@@ -1,12 +1,12 @@
-﻿using Apptenlink_Back.Entities;
-using Apptenlink_Back.Middleware.Exceptions.BadRequest;
-using Apptenlink_Back.Repositories.ProductoRepository;
-using Apptenlink_Back.Utils;
+﻿using Apptelink_Back.Entities;
+using Apptelink_Back.Middleware.Exceptions.BadRequest;
+using Apptelink_Back.Repositories.ProductoRepository;
+using Apptelink_Back.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Apptenlink_Back.Services
+namespace Apptelink_Back.Services
 {
     public class ProductoService : IProductoService
     {

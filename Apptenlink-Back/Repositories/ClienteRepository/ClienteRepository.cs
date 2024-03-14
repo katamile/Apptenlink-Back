@@ -1,11 +1,11 @@
-﻿using Apptenlink_Back.Entities;
-using Apptenlink_Back.Utils;
+﻿using Apptelink_Back.Entities;
+using Apptelink_Back.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Apptenlink_Back.Repositories.ClienteRepository
+namespace Apptelink_Back.Repositories.ClienteRepository
 {
     public class ClienteRepository : IClienteRepository
     {

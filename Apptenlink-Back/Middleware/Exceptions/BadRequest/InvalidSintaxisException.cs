@@ -1,4 +1,4 @@
-﻿namespace Apptenlink_Back.Middleware.Exceptions.BadRequest
+﻿namespace Apptelink_Back.Middleware.Exceptions.BadRequest
 {
     public class InvalidSintaxisException : BadRequestException
     {
