@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Apptenlink_Back.Repositories.ClienteRepositories
+namespace Apptenlink_Back.Repositories.ClienteRepository
 {
     public class ClienteRepository : IClienteRepository
     {
@@ -25,6 +25,13 @@ namespace Apptenlink_Back.Repositories.ClienteRepositories
         {
             return await _contexto.Clientes
                                    .Where(c => c.IdCliente == idCliente && c.Estado == Globales.ESTADO_ACTIVO)
+                                   .FirstOrDefaultAsync();
+        }
+
+        public async Task<Cliente> ObtenerPorIdentificacionAsync(string identificacion)
+        {
+            return await _contexto.Clientes
+                                   .Where(c => c.Identificacion == identificacion && c.Estado == Globales.ESTADO_ACTIVO)
                                    .FirstOrDefaultAsync();
         }
 

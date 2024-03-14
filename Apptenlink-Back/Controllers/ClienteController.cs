@@ -25,7 +25,7 @@ namespace Apptenlink_Back.Controllers
             return Ok(clientes);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("ConsultarPorId/{id}")]
         public async Task<ActionResult<Cliente>> ObtenerClientePorId(int id)
         {
             var cliente = await _clienteService.ObtenerClientePorIdAsync(id);
@@ -35,7 +35,7 @@ namespace Apptenlink_Back.Controllers
             return cliente;
         }
 
-        [HttpPost]
+        [HttpPost("CrearCliente")]
         public async Task<ActionResult<Cliente>> CrearCliente([FromBody] Cliente cliente)
         {
             if (!ModelState.IsValid)
@@ -43,12 +43,12 @@ namespace Apptenlink_Back.Controllers
 
             var result = await _clienteService.CrearClienteAsync(cliente);
             if (!result)
-                return StatusCode(500); // Algo salió mal en el servidor
+                return StatusCode(500);
 
             return CreatedAtAction(nameof(ObtenerClientePorId), new { id = cliente.IdCliente }, cliente);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("ActualizarCliente/{id}")]
         public async Task<ActionResult<Cliente>> ActualizarCliente(int id, [FromBody] Cliente cliente)
         {
             if (!ModelState.IsValid)
@@ -59,12 +59,12 @@ namespace Apptenlink_Back.Controllers
 
             var result = await _clienteService.ActualizarClienteAsync(cliente);
             if (!result)
-                return StatusCode(500); // Algo salió mal en el servidor
+                return StatusCode(500);
 
             return NoContent();
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("EliminarCliente/{id}")]
         public async Task<ActionResult> EliminarCliente(int id)
         {
             var result = await _clienteService.EliminarClienteAsync(id);

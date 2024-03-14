@@ -1,11 +1,12 @@
 ﻿using Apptenlink_Back.Entities;
 
-namespace Apptenlink_Back.Repositories.ClienteRepositories
+namespace Apptenlink_Back.Repositories.ClienteRepository
 {
     public interface IClienteRepository
     {
         Task<IEnumerable<Cliente>> ListarTodosAsync();
         Task<Cliente> ObtenerPorIdAsync(int idCliente);
+        Task<Cliente> ObtenerPorIdentificacionAsync(string identificacion);
         Task<bool> CrearAsync(Cliente cliente);
         Task<bool> ActualizarAsync(Cliente cliente);
         Task<bool> EliminarAsync(int idCliente);

@@ -1,5 +1,5 @@
 using Apptenlink_Back.Entities;
-using Apptenlink_Back.Repositories.ClienteRepositories;
+using Apptenlink_Back.Repositories.ClienteRepository;
 using Apptenlink_Back.Repositories.GenericRepository;
 using Apptenlink_Back.Services;
 using Apptenlink_Back.Utils;
