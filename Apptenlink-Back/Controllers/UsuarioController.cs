@@ -1,4 +1,5 @@
-﻿using Apptenlink_Back.Services.UsuarioService;
+﻿using Apptenlink_Back.Middleware.Models;
+using Apptenlink_Back.Services.UsuarioService;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -17,10 +18,9 @@ namespace Apptenlink_Back.Controllers
 
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(
-            [FromQuery]string username,
-            [FromQuery] string password)
+            [FromBody] UsuarioLoginRequest request)
         {
-            var token = await _usuarioService.ValidarCredencialesAsync(username, password);
+            var token = await _usuarioService.ValidarCredencialesAsync(request.Username, request.Password);
             if (token == null)
                 return Unauthorized("Nombre de usuario o contraseña incorrectos.");
 
@@ -29,14 +29,14 @@ namespace Apptenlink_Back.Controllers
 
         [HttpPost("cambiar-contraseña")]
         public async Task<ActionResult> CambiarContraseña(
-            [FromQuery] string username,
-            [FromQuery] string nuevaContraseña)
+            [FromBody] CambiarContraseñaRequest request)
         {
-            var resultado = await _usuarioService.CambiarContraseñaAsync(username, nuevaContraseña);
+            var resultado = await _usuarioService.CambiarContraseñaAsync(request.Username, request.NuevaContraseña);
             if (!resultado)
                 return BadRequest("No se pudo cambiar la contraseña.");
 
             return Ok("Contraseña cambiada exitosamente.");
         }
+
     }
 }

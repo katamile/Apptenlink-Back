@@ -1,5 +1,6 @@
 ﻿using Apptelink_Back.Entities;
 using Apptelink_Back.Utils;
+using Apptenlink_Back.Middleware.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,15 +31,15 @@ namespace Apptelink_Back.Repositories.UsuarioRepository
                                                                 u.Estado == Globales.ESTADO_BLOQUEADO);
         }
 
-        public async Task<string> ValidarCredencialesAsync(string username, string contraseña)
+        public async Task<string> ValidarCredencialesAsync(UsuarioLoginRequest request)
         {
-            var usuario = await ObtenerPorUsernameAsync(username);
+            var usuario = await ObtenerPorUsernameAsync(request.Username);
 
             if (usuario == null)
                 return null;
 
             // Verificar la contraseña
-            if (BCrypt.Net.BCrypt.Verify(contraseña, usuario.Contraseña))
+            if (BCrypt.Net.BCrypt.Verify(request.Password, usuario.Contraseña))
             {
                 // Si las credenciales son válidas, restablecer el contador de intentos fallidos
                 usuario.IntentosFallidos = 0;
@@ -80,18 +81,21 @@ namespace Apptelink_Back.Repositories.UsuarioRepository
             }
         }
 
-        public async Task<bool> CambiarContraseñaAsync(string username, string nuevaContraseña)
+        public async Task<bool> CambiarContraseñaAsync(CambiarContraseñaRequest request)
         {
-            var usuario = await ObtenerUsuarioCambiar(username);
+            var usuario = await ObtenerUsuarioCambiar(request.Username);
 
             if (usuario == null)
                 return false;
 
             // Actualizar la contraseña
-            usuario.Contraseña = BCrypt.Net.BCrypt.HashPassword(nuevaContraseña);
-            usuario.IntentosFallidos = 0; // Restablecer el contador de intentos fallidos
+            usuario.Contraseña = BCrypt.Net.BCrypt.HashPassword(request.NuevaContraseña);
+            usuario.IntentosFallidos = 0;
+            usuario.Estado = Globales.ESTADO_ACTIVO;
             await _contexto.SaveChangesAsync();
             return true;
         }
+
+
     }
 }

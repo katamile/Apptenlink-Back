@@ -1,4 +1,5 @@
 ﻿using Apptelink_Back.Repositories.UsuarioRepository;
+using Apptenlink_Back.Middleware.Models;
 using System.Threading.Tasks;
 
 namespace Apptenlink_Back.Services.UsuarioService
@@ -14,12 +15,25 @@ namespace Apptenlink_Back.Services.UsuarioService
 
         public async Task<string> ValidarCredencialesAsync(string username, string contraseña)
         {
-            return await _usuarioRepository.ValidarCredencialesAsync(username, contraseña);
+            var request = new UsuarioLoginRequest
+            {
+                Username = username,
+                Password = contraseña
+            };
+            return await _usuarioRepository.ValidarCredencialesAsync(request);
         }
 
         public async Task<bool> CambiarContraseñaAsync(string username, string nuevaContraseña)
         {
-            return await _usuarioRepository.CambiarContraseñaAsync(username, nuevaContraseña);
+            var request = new CambiarContraseñaRequest
+            {
+                Username = username,
+                NuevaContraseña = nuevaContraseña
+            };
+            return await _usuarioRepository.CambiarContraseñaAsync(request);
         }
+
+
+
     }
 }
