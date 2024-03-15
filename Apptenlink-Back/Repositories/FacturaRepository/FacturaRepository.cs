@@ -15,12 +15,18 @@ namespace Apptelink_Back.Repositories.FacturaRepository
 
         public async Task<IEnumerable<Factura>> ListarTodosAsync()
         {
-            return await _contexto.Facturas.Include(f => f.DetalleFacturas).Where(f => f.Estado == Globales.ESTADO_ACTIVO).ToListAsync();
+            return await _contexto.Facturas
+                                               .Include(f => f.DetalleFacturas)
+                                               .Where(f => f.Estado == Globales.ESTADO_ACTIVO)
+                                               .ToListAsync();
         }
 
         public async Task<Factura> ObtenerPorIdAsync(int idFactura)
         {
-            return await _contexto.Facturas.Include(f => f.DetalleFacturas).FirstOrDefaultAsync(f => f.IdFactura == idFactura && f.Estado == Globales.ESTADO_ACTIVO);
+            return await _contexto.Facturas
+                                                .Include(f => f.DetalleFacturas)
+                                                .FirstOrDefaultAsync(f => f.IdFactura == idFactura && 
+                                                                        f.Estado == Globales.ESTADO_ACTIVO);
         }
 
         public async Task<Factura> ObtenerPorNumeroAsync(string numeroFactura)

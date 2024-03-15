@@ -90,5 +90,6 @@ namespace Apptelink_Back.Controllers
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
     }
 }

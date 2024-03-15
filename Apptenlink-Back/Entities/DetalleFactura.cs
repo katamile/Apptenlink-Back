@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Apptelink_Back.Entities
 {
@@ -35,7 +36,10 @@ namespace Apptelink_Back.Entities
         [Required(ErrorMessage = "La fecha de estado no puede ser nula.")]
         public DateTime? FechaCreacion { get; set; }
 
+        [JsonIgnore]
         public virtual Factura IdFacturaNavigation { get; set; } = null!;
+
+        [JsonIgnore]
         public virtual Producto IdProductoNavigation { get; set; } = null!;
     }
 }
