@@ -24,6 +24,12 @@ namespace Apptelink_Back.Repositories.UsuarioRepository
                                                                 u.Estado == Globales.ESTADO_ACTIVO);
         }
 
+        public async Task<Usuario> ObtenerUsuarioCambiar(string username)
+        {
+            return await _contexto.Usuarios.FirstOrDefaultAsync(u => u.Username == username &&
+                                                                u.Estado == Globales.ESTADO_BLOQUEADO);
+        }
+
         public async Task<string> ValidarCredencialesAsync(string username, string contraseña)
         {
             var usuario = await ObtenerPorUsernameAsync(username);
@@ -76,7 +82,7 @@ namespace Apptelink_Back.Repositories.UsuarioRepository
 
         public async Task<bool> CambiarContraseñaAsync(string username, string nuevaContraseña)
         {
-            var usuario = await ObtenerPorUsernameAsync(username);
+            var usuario = await ObtenerUsuarioCambiar(username);
 
             if (usuario == null)
                 return false;

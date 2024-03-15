@@ -16,9 +16,11 @@ namespace Apptenlink_Back.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(string username, string contraseña)
+        public async Task<ActionResult<string>> Login(
+            [FromQuery]string username,
+            [FromQuery] string password)
         {
-            var token = await _usuarioService.ValidarCredencialesAsync(username, contraseña);
+            var token = await _usuarioService.ValidarCredencialesAsync(username, password);
             if (token == null)
                 return Unauthorized("Nombre de usuario o contraseña incorrectos.");
 
@@ -26,7 +28,9 @@ namespace Apptenlink_Back.Controllers
         }
 
         [HttpPost("cambiar-contraseña")]
-        public async Task<ActionResult> CambiarContraseña(string username, string nuevaContraseña)
+        public async Task<ActionResult> CambiarContraseña(
+            [FromQuery] string username,
+            [FromQuery] string nuevaContraseña)
         {
             var resultado = await _usuarioService.CambiarContraseñaAsync(username, nuevaContraseña);
             if (!resultado)
