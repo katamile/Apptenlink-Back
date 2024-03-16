@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Apptelink_Back.Controllers
 {
-   //[Authorize]
+   [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductoController : ControllerBase
